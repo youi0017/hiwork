@@ -1,0 +1,41 @@
+<?php 
+/*
+自定义的 paginate 分页视图
+注意：需传入 \hw\librarys\Pager 的对象, 变量名称为 $pager
+*/
+?>
+
+<?php
+$page = $pager->page;//第1页码
+$totalPage = $pager->totalPage;//最后1页码
+$first='javascript:void(0)';
+$end = 'javascript:void(0)';
+$pre='javascript:void(0)';
+$next='javascript:void(0)';
+$preCls = 'style="color:#AAA;"';
+$nextCls = $preCls;
+
+if($page>1){
+    $first = $pager->url(1);
+    $pre = $pager->url($page-1);//$pager->previousPageUrl();
+    $preCls = '';
+}
+
+if($page<$totalPage){
+    $next = $pager->url($page+1);
+    $end = $pager->url($totalPage);
+    $nextCls = '';
+}
+?>
+
+<div>
+    <div style="float:right">
+        <a title='首页' <?=$preCls?> href='<?=$first?>'>首页</a>
+        <a title='上页' <?=$preCls?> href='<?=$pre?>'>上页</a>
+        <a title='下页' <?=$nextCls?> href='<?=$next?>'>下页</a>
+        <a title='末页' <?=$nextCls?> href='<?=$end?>'>末页</a>
+    </div>
+    <div>
+        第 <?=$page;?> 页，共 <?=$totalPage;?> 页
+    </div>
+</div>
