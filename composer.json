@@ -2,27 +2,17 @@
     "name": "chy/hiwork",
     "description": "hiwork, a high performance php framework",
     "type": "project",
-    "repositories": [
-        {"type": "composer", "url": "http://pkg.phpcomposer.com/repo/packagist/"},
-        {"packagist": false}
-    ]}
     "authors": [{
         "name": "youi0017",
         "email": "chujiaye@foxmail.com"
     }],
     "minimum-stability": "dev",
-
-	"config": {
-	    "platform-check": false
-	},
-
     "require-dev": {
         "php": ">=7.1.0"
     },
     "require": {
         "monolog/monolog": "^2.2",
-        "nikic/fast-route": "^1.3",
-        "swiftmailer/swiftmailer": "6.2.7"
+        "nikic/fast-route": "^1.3"
     },
     "autoload": {
         "files": [
