@@ -3,9 +3,10 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
 <title>捕错误获-HiWork调试页面</title>
-<link href="/static/css/bootstrap.min.css" rel="stylesheet" type="text/css" />
-<link rel="stylesheet" type="text/css" href="/static/js/prism/prism-night.css"/>
+<!-- <link href="/static/css/bootstrap.min.css" rel="stylesheet" type="text/css" /> -->
 <style type="text/css">
+<?php echo file_get_contents(__DIR__.'/prism/prism-night.css'); ?>
+
 #header{margin:10px 0; padding:10px 0; border-bottom: 1px solid #DDD; }
 #info{list-style-type:none;}
 #info li{line-height:2;}
@@ -88,10 +89,8 @@
 <code class="language-php">{GLOBALS}</code>
 </pre>
  -->
-<script type="text/javascript" src="/static/js/prism/prism-Highlight-Numbers.js"></script>
 <script type="text/javascript">
-
-
+<?php echo file_get_contents(__DIR__.'/prism/prism-Highlight-Numbers.js'); ?>
 </script>
 </body>
 </html>
