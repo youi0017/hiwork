@@ -3,9 +3,12 @@
 use \hw\Rtn;
 use \hw\Log;
 
-/*
- * 框架的错误处理库
+/**
+ * hw框架的错误/异常处理
+ * 
  * 本类 拦截 notice、warning等try-catch拦截不了的错误，并提供了处理方法，但应注意，本类不作逻辑处理（交由bootstrap）
+ * 
+ * 20220331100730 拦截不了的错误抛出 ErrorException，如用户不使用try-catch处理，则交由HwException处理。
  */
 
 class HwException
@@ -19,7 +22,7 @@ class HwException
 	public static function exc()
 	{
 		// 报告所有错误，但控制显示
-        \error_reporting(\E_ALL);
+    \error_reporting(\E_ALL);
 		\ini_set('display_errors', 'off');//off on
 		// \ini_set('log_errors', 'On');
 		// \ini_set('error_log',  Log::logFilePath());
@@ -36,18 +39,28 @@ class HwException
 	 * 生成Exception后，按异常处理  
 	 * 可处理的错误有：notice、warning等
 	 * 20201225131316 chy
+	 * 20220331095723 一些错误（如：mkdir(): No such file or directory）不能被try-catch接管，所以由set_error_handler捕获，并在此转化为异常，如用户有try则使用自定义的try处理，否则交由系统异常处理
 	 */
 	public static function dealError($errCode, $errMsg, $file, $line)
 	{
-		self::dealExpt(
-			new \ErrorException(
-				$errMsg, 
-				$errCode, 
-				$errCode, 
-				$file, 
-				$line
-			)
+		// 抛出异常，由 用户自已的try处理，如无则由 self::dealExpt 处理
+		throw new \ErrorException(
+			$errMsg, 
+			$errCode, 
+			$errCode, 
+			$file, 
+			$line
 		);
+
+		// self::dealExpt(
+		// 	new \ErrorException(
+		// 		$errMsg, 
+		// 		$errCode, 
+		// 		$errCode, 
+		// 		$file, 
+		// 		$line
+		// 	)
+		// );
 	}
 
 
