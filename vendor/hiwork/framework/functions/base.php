@@ -46,22 +46,28 @@ function env($key, $val=null)
     if(\is_null($val)){
 
         if(\getenv('APP_NAME')==false){
+            // 读取环境配置文件
             $env = load(DOC_ROOT.'/.env');
-            // var_dump(\getenv('APP_NAME'), $env);//exit;
+
+            // 如果没有环境配置文件，则使用默认设置
+            if(!$env){
+                $env = [
+                    'APP_NAME'=>'sample',
+                    'APP_DEBUG'=>1,
+                    'APP_FILELOG'=>'file',
+                    'APP_TIMEZONE'=>'PRC',
+                ];
+            }
+
             foreach($env as $k =>$v){
                 \putenv($k.'='.$v);
             }
         }
 
-        return \getenv($key);        
-
-        // if(!isset($_ENV['APP_NAME']))
-        //     $_ENV = load(DOC_ROOT.'/.env'); 
-        // return $_ENV[$key] ?? null;
+        return \getenv($key);
     }
     else{
         \putenv($key.'='.$val);
-        // $_ENV[$key]=$val;
     }
 }
 
@@ -101,7 +107,7 @@ function load($file)
         case 'yml':
         case 'yaml':
             if (\function_exists('yaml_parse_file')) {
-                $config = yaml_parse_file($file);
+                $config = \yaml_parse_file($file);
             }
             break;
             case 'env':
