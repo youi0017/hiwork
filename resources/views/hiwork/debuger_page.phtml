@@ -3,10 +3,12 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
 <title>捕错误获-HiWork调试页面</title>
-<!-- <link href="/static/css/bootstrap.min.css" rel="stylesheet" type="text/css" /> -->
 <style type="text/css">
 <?php echo file_get_contents(__DIR__.'/prism/prism-night.css'); ?>
-
+.container{
+    max-width: 960px;
+    margin:0 auto;
+}
 #header{margin:10px 0; padding:10px 0; border-bottom: 1px solid #DDD; }
 #info{list-style-type:none;}
 #info li{line-height:2;}
@@ -59,7 +61,7 @@
 </div>
 
 <!--  main message -->
-<div class="msg h3"><?=$message;?></div>
+<h3><?=$message;?></h3>
 
 
 <!--  info message -->

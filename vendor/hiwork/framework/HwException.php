@@ -29,9 +29,9 @@ class HwException
 
 		// 异常处理接管(包括下面的 set_error_handler转化的错误异常)
 		set_exception_handler(self::class.'::dealExpt');
-		// 捕获错误(change error to ErrorException)
+		// 捕获错误转为ErrorException，并交由dealExpt处理)
 		set_error_handler(self::class.'::dealError');
-		// 捕获其它未被捕捉或停止的
+		// 捕获其它未被捕捉或停止的(不用捕获，直接调用处理方法)
 		register_shutdown_function(self::class.'::otherErrToExpt');
 	}
 
@@ -43,6 +43,8 @@ class HwException
 	 */
 	public static function dealError($errCode, $errMsg, $file, $line)
 	{
+		// var_dump('error to dealError', $errCode, $errMsg, $file, $line);exit;
+
 		// 抛出异常，由 用户自已的try处理，如无则由 self::dealExpt 处理
 		throw new \ErrorException(
 			$errMsg, 
@@ -51,16 +53,6 @@ class HwException
 			$file, 
 			$line
 		);
-
-		// self::dealExpt(
-		// 	new \ErrorException(
-		// 		$errMsg, 
-		// 		$errCode, 
-		// 		$errCode, 
-		// 		$file, 
-		// 		$line
-		// 	)
-		// );
 	}
 
 
@@ -81,6 +73,9 @@ class HwException
 	//控制错误:20190816114454
 	public static function dealExpt($expt)
 	{
+
+		// var_dump('set_exception_handler : ', $expt);exit;
+
 		\header('Access-Control-Allow-Origin: *');
 		// 日志：console/file/empty
 		// var_dump(\env('APP_FILELOG'));exit;
@@ -184,18 +179,9 @@ class HwException
 	public static function otherErrToExpt()
 	{
 		$error = \error_get_last();
-		/* 
-		var_dump($error, new \ErrorException(
-			$error['message'], 
-			$error['type'], 
-			$error['type'], 
-			$error['file'], 
-			$error['line']
-			)
-		);exit;
- 		*/
-		 
-	   	if($error) {
+		// var_dump('register_shutdown_function to otherErrToExpt', $error);exit;
+ 				 
+		if($error) {
 			exit(
 				self::dealExpt(
 					new \ErrorException(
@@ -209,8 +195,7 @@ class HwException
 			);
 
 			// throw  new \ErrorException($error['message'], $error['type'], $error['type'], $error['file'], $error['line']);
-	    }
-
+	  }
 	}
 
 }

@@ -9,8 +9,7 @@ class Bootstrap
         $this->init();//全局初始化
         \hw\HwException::exc();//错误器注册
         
-        echo (new \hw\Route)->parse();//路由解析分发
-        exit;
+        exit ((new \hw\Route)->parse());//路由解析分发
     }
 
     // 全局初始化

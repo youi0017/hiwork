@@ -26,16 +26,17 @@ class upload
 	private $errNmb=0;//错误号
 
 	//构造函数完成基本功能
-	function __construct($fieldName, array $allow_type=[], int $max_size=1024000)
+	function __construct(
+		$fieldName, 
+		array $allow_type=['image/pjpeg','image/jpeg','image/gif','image/png','image/x-png','image/bmp'], 
+		int $max_size=1024000
+	)
 	{
 		// 上传域名称
 		$this->fieldName = $fieldName;
 
 		// 允许上传类型
-		$this->allow_type = 
-			!$allow_type 
-				? ['image/pjpeg','image/jpeg','image/gif','image/png','image/x-png','image/bmp'] 
-				: $allow_type;
+		$this->allow_type = $allow_type;
 
 		// 允许上传大小
 		$this->max_size = $max_size;
@@ -139,8 +140,8 @@ class upload
 	//FUN:check_file 上传文件合法性检查
 	private function check_file()
 	{
-		//$allow_type=='ALL'时，不检查类型合法性
-		if($this->allow_type!='ALL'){
+		//$allow_type==[]时，不检查类型合法性
+		if(!!$this->allow_type){
 			//检查类型合法性
 			if (!in_array($this->fileType, $this->allow_type)){
 				return $this->setErr(-1);
