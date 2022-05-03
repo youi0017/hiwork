@@ -73,26 +73,21 @@ class HwException
 	//控制错误:20190816114454
 	public static function dealExpt($expt)
 	{
-
 		// var_dump('set_exception_handler : ', $expt);exit;
-
 		\header('Access-Control-Allow-Origin: *');
-		// 日志：console/file/empty
-		// var_dump(\env('APP_FILELOG'));exit;
-		logger(\env('APP_FILELOG'), 'error')->error('捕获错误', [
+
+		logger(\env('APP_FILELOG'), 'SYSTEM')->error('捕获错误', [
 			'message'=>$expt->getMessage(),
 			'line'=>$expt->getLine(),
 			'file'=>$expt->getFile(),
 			'uri'=>$_SERVER['REQUEST_URI'],
 			// 'stack'=>(string)$expt,
 		]);
-		// var_dump($expt);return;
 
 		// 调试页，develop:详细错误信息  product:简文字
 		exit(
 			env('APP_DEBUG')
 				? self::debugPage($expt)//develop
-				// : exit(new HttpError(500))//product
 				: Rtn::epage(500)//product
 		);
 

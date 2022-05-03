@@ -88,7 +88,7 @@ class Route
             // }
         } 
         else {
-            Rtn::epage(404, "[404] : <b>{$match['method']} {$match['uri']}</b>");
+            Rtn::epage(404, "[404] 受访页面不存在 : {$match['method']} {$match['uri']}");
         }
 
     }
@@ -105,32 +105,15 @@ class Route
 
         //2. 过滤掉后缀部分（.之后的所有内容）
         if(substr($uri, -5)=='.html')
-            $uri = substr($uri, 0, -5);  
+            $uri = substr($uri, 0, -5); 
+        
+        //3. uri合法化并写入env
+        $uri = preg_replace('/\/{2,}/', '/', $uri);
+        \env('uri', $uri);
 
         //3. 解析为uriPath
         $uriArr = explode('/', \rawurldecode($uri));
-        // \env('path', $uriArr);
-
-
-        if(empty($uriArr[1])){
-            $ctl = 'Index';
-            $act = 'index';
-        }
-        else{
-            $ctl = \ucfirst($uriArr[1]);
-            if($ctl=='Index')
-                throw new \Exception('默认控制器不能使用[Index]');
-
-            if( empty($uriArr[2]) ) 
-                $act='index';
-            else{
-                if($uriArr[2]=='index')
-                    throw new \Exception('默认执行器不能使用[index]');
-            }
-        }
-
-        // var_dump($uri, $uriArr, $ctl, $act);exit;
-
+        
         // 4. 取回ctl和act
         $ctl =  empty($uriArr[1]) ? 'Index' : \ucfirst($uriArr[1]);
         $ctl = '\app\\'.\env('APP_NAME').'\controllers\\'.$ctl;
@@ -138,7 +121,13 @@ class Route
         // var_dump($uri, $uriArr, $ctl, $act);//exit;
 
         // 5. 执行
-        return \call_user_func_array([new $ctl, $act], \array_slice($uriArr, 3));
+        if(method_exists($ctl, $act)){
+            echo \call_user_func_array([new $ctl, $act], \array_slice($uriArr, 3));
+        }
+        else {
+            Rtn::epage(404, "[404] 受访页面不存在 : {$uri}");
+        }
+        
     }
     
 }

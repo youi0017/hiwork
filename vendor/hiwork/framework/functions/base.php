@@ -29,9 +29,9 @@ function request()
  * 示例：
  * logger('console')->info('这是一个测试信息');
  */
-function logger($loggerType='console', $loggerName='running')
+function logger($loggerType='console', $loggerName='developer')
 {
-    return \hw\Log::logger($loggerType, $loggerName);
+    return \hw\Log::getlogger($loggerType, $loggerName);
 }
 
 // 公共包加载器 辅助函数
@@ -48,6 +48,7 @@ function env($key, $val=null)
         if(\getenv('APP_NAME')==false){
             // 读取环境配置文件
             $env = load(DOC_ROOT.'/.env');
+            // var_dump($env);
 
             // 如果没有环境配置文件，则使用默认设置
             if(!$env){
@@ -107,7 +108,7 @@ function load($file)
         case 'yml':
         case 'yaml':
             if (\function_exists('yaml_parse_file')) {
-                $config = \yaml_parse_file($file);
+                // $config = \yaml_parse_file($file);
             }
             break;
             case 'env':
