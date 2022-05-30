@@ -318,22 +318,4 @@ class AltoRouter
         return "`^$route$`u";
     }
 
-
-        /* 
-     * add by chy 20220502075847
-     * 
-     * 使用示例
-        $router->group('/some', [
-            ['GET', '[/]?', '__getUri'],
-            ['GET', '/abc[/]?', '__getUri'],
-            ['GET', '/abc/xxx[/|.html]?', '__getUri'],
-            ['POST', '/auth/register', 'RegisterController@register'],
-            ['POST', '/auth/forgot', 'ForgotPasswordController@forgot'],
-        ]);
-     */
-    public function group($prefix, $routes){
-        foreach($routes as $k=>$r)
-            $routes[$k][1] = $prefix.$r[1];
-        $this->addRoutes($routes);
-    }
 }
