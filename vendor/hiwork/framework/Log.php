@@ -15,6 +15,9 @@ use \Monolog\Formatter\JsonFormatter;
  * https://github.com/Seldaek/monolog/blob/2.x/doc/01-usage.md
  * 每一个日志服务实例 (Logger) 都有一个通道（名称）即：new Logger('framework') ，并有一个处理器 (Handler)栈。
  * 
+ * 示例：
+    Log::getlogger()
+ * 
  */
 
 Class Log
@@ -22,7 +25,13 @@ Class Log
 	// 所有日志记录器
 	private static $loggers=[];
 
-	// 用户在程序中调用使用此方法
+  /* 
+   * $loggerType string 日志类型（对应处理器栈）console(默认) 或 file
+   * $loggerName string 频道名称，developer（默认） 或 其它自已定义
+   * 说明：HwException中错误频道名称为：SYSTEM（日志文件名为：SYSTEM-年-月-日.log），开发记录的错误频道名称默认为developer（日志文件名为：developer-年-月-日.log）
+   * 
+   * 20220530160437
+   */
 	public static function getlogger($loggerType='console', $loggerName='developer')
 	{
 		// 日志记录器名称：频道+日志类型
@@ -60,6 +69,7 @@ Class Log
 		//如还有其它处理器，则允许冒泡
 		$monologger->pushHandler(
 			new StreamHandler(
+        // $monologger->getName() 为当前日志的频道名称
 				self::logFilePath($monologger->getName().'-'.\date('Y-m-d')), 
 				Logger::DEBUG,
 				true 
@@ -76,3 +86,4 @@ Class Log
 	}
 	
 }
+
